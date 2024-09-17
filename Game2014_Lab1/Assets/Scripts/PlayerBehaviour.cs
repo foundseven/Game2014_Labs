@@ -16,9 +16,11 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //init the movement
         float axisX = Input.GetAxisRaw("Horizontal") * _speed * Time.deltaTime;
         float axisY = Input.GetAxisRaw("Vertical") * _speed * Time.deltaTime;
 
+        //make the movement do its thing
         transform.position += new Vector3(axisX, axisY, 0);
 
         //check if player is going past the boundry
@@ -32,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour
             transform.position = new Vector3(_horizontalBoundry.max, transform.position.y, 0);
         }
 
+        //create the boundry stopper here
         if (transform.position.y > _verticalBoundry.max)
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.max, 0);
