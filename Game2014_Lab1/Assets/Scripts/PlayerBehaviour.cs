@@ -56,7 +56,7 @@ public class PlayerBehaviour : MonoBehaviour
         float axisY = Input.GetAxisRaw("Vertical") * _speed * Time.deltaTime;
 
         //make the movement do its thing
-        transform.position += new Vector3(axisX, axisY, 0);
+        _destination = new Vector3(axisX + transform.position.x, axisY + transform.position.y, 0);
     }
     void GetTouchInput()
     {
