@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScrollingBackground : MonoBehaviour
 {
-
+    //holding my variables 
     [SerializeField] private float _speed = 3.0f;
     private Vector3 _direction = Vector3.down;
     [SerializeField] private Boundry _boundry;
@@ -19,7 +19,9 @@ public class ScrollingBackground : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //each frame move the backgrounds pos by multiplying the direction vector by the speed and time.deltatime
         transform.position += _direction * _speed * Time.deltaTime; 
+        //checks the boundry and "respawns" the background accordingly
         if(transform.position.y < _boundry.min)
         {
             transform.position = _spawnPosition;

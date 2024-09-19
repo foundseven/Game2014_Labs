@@ -4,17 +4,52 @@ using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviour
 {
+    //set my variables
     [SerializeField] private float _speed;
     [SerializeField] private Boundry _horizontalBoundry;
     [SerializeField] private Boundry _verticalBoundry;
+
+    bool _isTestMobile;
+
+    Camera _camera;
+    Vector2 _destination;
+
+    bool _isMobilePlatform = true;
     // Start is called before the first frame update
     void Start()
     {
+        _camera = Camera.main;
+        if(!_isTestMobile)
+        {
+            _isMobilePlatform = Application.platform == RuntimePlatform.Android ||
+                            Application.platform == RuntimePlatform.IPhonePlayer;
+        }
         
     }
 
     // Update is called once per frame
     void Update()
+    {
+        if (_isMobilePlatform)
+        {
+            GetTouchInput();
+        }
+        else
+        {
+            GetTraditionalInput();
+        }
+
+        Move();
+        CheckBoundaries();
+
+    }
+
+    void Move()
+    {
+        transform.position = _destination;
+    }
+
+    void GetTraditionalInput()
     {
         //init the movement
         float axisX = Input.GetAxisRaw("Horizontal") * _speed * Time.deltaTime;
@@ -22,14 +57,25 @@ public class PlayerBehaviour : MonoBehaviour
 
         //make the movement do its thing
         transform.position += new Vector3(axisX, axisY, 0);
+    }
+    void GetTouchInput()
+    {
+        foreach (Touch touch in Input.touches)
+        {
+            _destination = _camera.ScreenToWorldPoint(touch.position);
+            _destination = Vector2.Lerp(transform.position, _destination, _speed * Time.deltaTime);
+        }
+    }
 
+    void CheckBoundaries()
+    {
         //check if player is going past the boundry
         //if they do switch side
-        if(transform.position.x > _horizontalBoundry.max)
+        if (transform.position.x > _horizontalBoundry.max)
         {
             transform.position = new Vector3(_horizontalBoundry.min, transform.position.y, 0);
         }
-        else if(transform.position.x < _horizontalBoundry.min)
+        else if (transform.position.x < _horizontalBoundry.min)
         {
             transform.position = new Vector3(_horizontalBoundry.max, transform.position.y, 0);
         }
@@ -44,6 +90,5 @@ public class PlayerBehaviour : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.min, 0);
         }
-
     }
 }
