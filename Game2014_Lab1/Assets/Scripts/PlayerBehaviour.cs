@@ -14,11 +14,14 @@ public class PlayerBehaviour : MonoBehaviour
     Camera _camera;
     Vector2 _destination;
 
+    GameController _gameController;
+
     bool _isMobilePlatform = true;
     // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main;
+        _gameController = FindObjectOfType<GameController>();
         if(!_isTestMobile)
         {
             _isMobilePlatform = Application.platform == RuntimePlatform.Android ||
@@ -89,6 +92,18 @@ public class PlayerBehaviour : MonoBehaviour
         else if (transform.position.y < _verticalBoundry.min)
         {
             transform.position = new Vector3(transform.position.x, _verticalBoundry.min, 0);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("Hit!");
+        if(collision.CompareTag("Enemy"))
+        {
+            _gameController.ChangeScore(5);
+            //Destroy(collision.gameObject);
+            //collision.enabled = false;
+            StartCoroutine(collision.GetComponent<EnemyBehaviour>().DyingRoutine());
         }
     }
 }
