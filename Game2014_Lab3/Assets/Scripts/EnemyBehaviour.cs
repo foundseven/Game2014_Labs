@@ -28,6 +28,7 @@ public class EnemyBehaviour : MonoBehaviour
     float _shootingCooldownTime;
 
     GameObject _bulletPrefab;
+    BulletManager _bulletManager;
 
 
     SpriteRenderer _spriteRenderer;
@@ -39,6 +40,8 @@ public class EnemyBehaviour : MonoBehaviour
     {
         _bulletPrefab = Resources.Load<GameObject>("Prefabs/Bullet");
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _bulletManager = FindObjectOfType<BulletManager>();
+
         Reset();
         StartCoroutine(ShootingRoutine());
     }
@@ -59,7 +62,8 @@ public class EnemyBehaviour : MonoBehaviour
     }
     IEnumerator ShootingRoutine()
     {
-        GameObject bullet = Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
+        GameObject bullet = _bulletManager.GetBullet();//Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
+        bullet.transform.position = _shootingPoint.position;
         bullet.transform.eulerAngles = new Vector3(0, 0, 180);
         bullet.GetComponent<SpriteRenderer>().color = Color.green;
         bullet.GetComponent<BulletBehaviour>().RelativeSpeedAddition(Mathf.Abs(_verticalSpeed));

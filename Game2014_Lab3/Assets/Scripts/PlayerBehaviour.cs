@@ -27,6 +27,7 @@ public class PlayerBehaviour : MonoBehaviour
     Vector2 _destination;
 
     GameController _gameController;
+    BulletManager _bulletManager;
 
     GameObject _bulletPrefab;
 
@@ -36,6 +37,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         _camera = Camera.main;
         _gameController = FindObjectOfType<GameController>();
+        _bulletManager = FindObjectOfType<BulletManager>();
 
         _bulletPrefab = Resources.Load<GameObject>("Prefabs/Bullet");
         if(!_isTestMobile)
@@ -71,7 +73,12 @@ public class PlayerBehaviour : MonoBehaviour
 
     IEnumerator ShootingRoutine()
     {
-        Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
+        //Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
+        GameObject bullet = _bulletManager.GetBullet();
+        bullet.transform.position = _shootingPoint.position;
+        bullet.transform.eulerAngles = Vector3.zero;
+        bullet.GetComponent<SpriteRenderer>().color = Color.white;
+
         yield return new WaitForSeconds(_shootingCooldownTime); 
 
         StartCoroutine(ShootingRoutine());
