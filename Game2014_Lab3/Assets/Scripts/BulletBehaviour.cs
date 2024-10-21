@@ -15,11 +15,12 @@ public class BulletBehaviour : MonoBehaviour
 
     BulletManager _bulletManager;
 
+    public BulletType _bulletType;
+
     // Start is called before the first frame update
     void Start()
     {
         _baseSpeed = _speed;
-        _bulletManager = FindObjectOfType<BulletManager>();
     }
 
     // Update is called once per frame
@@ -29,8 +30,13 @@ public class BulletBehaviour : MonoBehaviour
 
         if (transform.position.y > _boundry.max || transform.position.y < _boundry.min)
         {
-            _bulletManager.ReturnBullet(this.gameObject);
+            ReturnToPool();
         }
+    }
+
+    public void ReturnToPool()
+    {
+        BulletManager.ReturnBullet(this.gameObject, _bulletType);
     }
 
     public void RelativeSpeedAddition(float speed)

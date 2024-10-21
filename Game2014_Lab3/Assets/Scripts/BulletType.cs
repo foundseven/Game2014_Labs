@@ -5,5 +5,6 @@ using UnityEngine;
 public enum BulletType
 {
    PLAYER,
-   ENEMY
+   ENEMY,
+   SIZE //counts this enum for you.. for type safety
 }

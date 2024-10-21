@@ -29,17 +29,13 @@ public class PlayerBehaviour : MonoBehaviour
     GameController _gameController;
     BulletManager _bulletManager;
 
-    GameObject _bulletPrefab;
-
     bool _isMobilePlatform = true;
     // Start is called before the first frame update
     void Start()
     {
         _camera = Camera.main;
         _gameController = FindObjectOfType<GameController>();
-        _bulletManager = FindObjectOfType<BulletManager>();
 
-        _bulletPrefab = Resources.Load<GameObject>("Prefabs/Bullet");
         if(!_isTestMobile)
         {
             _isMobilePlatform = Application.platform == RuntimePlatform.Android ||
@@ -74,7 +70,7 @@ public class PlayerBehaviour : MonoBehaviour
     IEnumerator ShootingRoutine()
     {
         //Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
-        GameObject bullet = _bulletManager.GetBullet(BulletType.PLAYER);
+        GameObject bullet = BulletManager.GetBullet(BulletType.PLAYER);
         bullet.transform.position = _shootingPoint.position;
   
         yield return new WaitForSeconds(_shootingCooldownTime); 
@@ -138,6 +134,7 @@ public class PlayerBehaviour : MonoBehaviour
         if(collision.CompareTag("EnemyBullet"))
         {
             _gameController.ChangeScore(-5);
+            collision.GetComponent<BulletBehaviour>().ReturnToPool();
         }
     }
 }

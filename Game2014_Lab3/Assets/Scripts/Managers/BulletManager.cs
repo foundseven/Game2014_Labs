@@ -2,58 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletManager : MonoBehaviour
+public class BulletManager
 {
+    //system that manages the bullets in the containers
+    //property
+    public static BulletManager Instance 
+    { 
+        //anytime i call bullet manager . instance it is going to check if it is valid
+        get 
+        {
+            if (_instance == null)
+            {
+                _instance = new BulletManager();
+            }
+            return _instance;
+        } 
+    }
+    //field
+    private static BulletManager _instance;
+    //now i can add logic to the properties
+
+
     [SerializeField]
-    int _totalBulletNum;
+    int _totalBulletNum = 20;
 
     GameObject _bulletPrefab;
-    Queue<GameObject> _bulletPool = new Queue<GameObject>();
-    // Start is called before the first frame update
-    void Start()
-    {
-        _bulletPrefab = Resources.Load<GameObject>("Prefabs/Bullet");
+    //making a dictionary
+    Dictionary<BulletType, Queue<GameObject>> bullets;
 
+
+    private BulletManager() 
+    {
+        //init the dictionary of bullets
+        bullets = new Dictionary<BulletType, Queue<GameObject>>();
+
+
+        //need a working queue
+        //(int) is just like casting
+        for(int i = 0; i < (int) BulletType.SIZE; i++)
+        {
+            //casts it to a bullet type like how we did before
+            bullets[(BulletType)i] = new Queue<GameObject> ();
+        }
         for(int i = 0; i < _totalBulletNum; i++)
         {
-            CreateBullet();
+            bullets[BulletType.PLAYER].Enqueue(BulletFactory.CreateBullet(BulletType.PLAYER));
+        }
+        for (int i = 0; i < _totalBulletNum; i++)
+        {
+            bullets[BulletType.ENEMY].Enqueue(BulletFactory.CreateBullet(BulletType.ENEMY));
         }
     }
 
-    void CreateBullet()
+    public static GameObject GetBullet(BulletType type)
     {
-        GameObject bullet = Instantiate(_bulletPrefab, transform);
-        bullet.SetActive(false);
-        _bulletPool.Enqueue(bullet);
-    }
-    public GameObject GetBullet(BulletType type)
-    {
-        if(_bulletPool.Count <= 1)
+        if (Instance.bullets[type].Count <= 1)
         {
-            CreateBullet();
+            BulletFactory.CreateBullet(type);
         }
-        GameObject bullet = _bulletPool.Dequeue();
+
+        GameObject bullet = Instance.bullets[type].Dequeue();
         bullet.SetActive(true);
 
-        switch(type)
-        {
-            case BulletType.PLAYER:
-                bullet.transform.eulerAngles = Vector3.zero;
-                bullet.GetComponent<SpriteRenderer>().color = Color.white;
-                bullet.tag = "PlayerBullet";
-                break;
-            case BulletType.ENEMY:
-                bullet.transform.eulerAngles = new Vector3(0, 0, 180);
-                bullet.GetComponent<SpriteRenderer>().color = Color.green;
-                bullet.tag = "EnemyBullet";
-                break;
-        }
         return bullet;
     }
 
-    public void ReturnBullet(GameObject bullet)
+    public static void ReturnBullet(GameObject bullet, BulletType type)
     {
         bullet.SetActive(false);
-        _bulletPool.Enqueue(bullet);
+        Instance.bullets[type].Enqueue(bullet);
     }
 }

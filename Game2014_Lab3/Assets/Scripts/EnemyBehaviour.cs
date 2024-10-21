@@ -40,7 +40,6 @@ public class EnemyBehaviour : MonoBehaviour
     {
         _bulletPrefab = Resources.Load<GameObject>("Prefabs/Bullet");
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _bulletManager = FindObjectOfType<BulletManager>();
         _gameController = FindObjectOfType<GameController>();
         Reset();
         StartCoroutine(ShootingRoutine());
@@ -50,7 +49,6 @@ public class EnemyBehaviour : MonoBehaviour
     void Update()
     {
         //move enemy vertically  and horizontally
-        //transform.position = new Vector2(transform.position.x + _horizontalSpeed * Time.deltaTime, transform.position.y - _verticalSpeed * Time.deltaTime); 
         transform.position = new Vector2(Mathf.PingPong(_horizontalSpeed * Time.time,
                              _horizontalBoundry.max - _horizontalBoundry.min) + _horizontalBoundry.min,
                              transform.position.y + _verticalSpeed * Time.deltaTime);
@@ -62,7 +60,7 @@ public class EnemyBehaviour : MonoBehaviour
     }
     IEnumerator ShootingRoutine()
     {
-        GameObject bullet = _bulletManager.GetBullet(BulletType.ENEMY);//Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
+        GameObject bullet = BulletManager.GetBullet(BulletType.ENEMY);
         bullet.transform.position = _shootingPoint.position;
         bullet.GetComponent<BulletBehaviour>().RelativeSpeedAddition(Mathf.Abs(_verticalSpeed));
         yield return new WaitForSeconds(_shootingCooldownTime);
@@ -100,6 +98,7 @@ public class EnemyBehaviour : MonoBehaviour
         if(collision.CompareTag("PlayerBullet"))
         {
             _gameController.ChangeScore(15);
+            collision.GetComponent<BulletBehaviour>().ReturnToPool();
             StartCoroutine(DyingRoutine());
         }
     }
