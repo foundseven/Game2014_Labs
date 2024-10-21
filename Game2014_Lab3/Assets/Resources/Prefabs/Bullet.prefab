@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 109481035810621614}
   - component: {fileID: 3793743557463352015}
   - component: {fileID: 8144227521592449649}
+  - component: {fileID: 7721826923951222856}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -98,6 +99,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _baseSpeed: 3
   _boundry:
     min: -5.5
     max: 5.5
+--- !u!70 &7721826923951222856
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2833693549636023186}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.038103193}
+  m_Size: {x: 0.1, y: 0.14831823}
+  m_Direction: 0

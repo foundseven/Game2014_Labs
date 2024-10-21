@@ -74,11 +74,9 @@ public class PlayerBehaviour : MonoBehaviour
     IEnumerator ShootingRoutine()
     {
         //Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
-        GameObject bullet = _bulletManager.GetBullet();
+        GameObject bullet = _bulletManager.GetBullet(BulletType.PLAYER);
         bullet.transform.position = _shootingPoint.position;
-        bullet.transform.eulerAngles = Vector3.zero;
-        bullet.GetComponent<SpriteRenderer>().color = Color.white;
-
+  
         yield return new WaitForSeconds(_shootingCooldownTime); 
 
         StartCoroutine(ShootingRoutine());
@@ -132,10 +130,14 @@ public class PlayerBehaviour : MonoBehaviour
         Debug.Log("Hit!");
         if(collision.CompareTag("Enemy"))
         {
-            _gameController.ChangeScore(5);
+            _gameController.ChangeScore(-5);
             //Destroy(collision.gameObject);
             //collision.enabled = false;
             StartCoroutine(collision.GetComponent<EnemyBehaviour>().DyingRoutine());
+        }
+        if(collision.CompareTag("EnemyBullet"))
+        {
+            _gameController.ChangeScore(-5);
         }
     }
 }

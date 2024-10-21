@@ -26,7 +26,7 @@ public class BulletManager : MonoBehaviour
         bullet.SetActive(false);
         _bulletPool.Enqueue(bullet);
     }
-    public GameObject GetBullet()
+    public GameObject GetBullet(BulletType type)
     {
         if(_bulletPool.Count <= 1)
         {
@@ -34,6 +34,20 @@ public class BulletManager : MonoBehaviour
         }
         GameObject bullet = _bulletPool.Dequeue();
         bullet.SetActive(true);
+
+        switch(type)
+        {
+            case BulletType.PLAYER:
+                bullet.transform.eulerAngles = Vector3.zero;
+                bullet.GetComponent<SpriteRenderer>().color = Color.white;
+                bullet.tag = "PlayerBullet";
+                break;
+            case BulletType.ENEMY:
+                bullet.transform.eulerAngles = new Vector3(0, 0, 180);
+                bullet.GetComponent<SpriteRenderer>().color = Color.green;
+                bullet.tag = "EnemyBullet";
+                break;
+        }
         return bullet;
     }
 

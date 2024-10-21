@@ -30,7 +30,7 @@ public class EnemyBehaviour : MonoBehaviour
     GameObject _bulletPrefab;
     BulletManager _bulletManager;
 
-
+    GameController _gameController;
     SpriteRenderer _spriteRenderer;
 
     Color[] _colors = {Color.green, Color.cyan, Color.white,
@@ -41,7 +41,7 @@ public class EnemyBehaviour : MonoBehaviour
         _bulletPrefab = Resources.Load<GameObject>("Prefabs/Bullet");
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _bulletManager = FindObjectOfType<BulletManager>();
-
+        _gameController = FindObjectOfType<GameController>();
         Reset();
         StartCoroutine(ShootingRoutine());
     }
@@ -62,10 +62,8 @@ public class EnemyBehaviour : MonoBehaviour
     }
     IEnumerator ShootingRoutine()
     {
-        GameObject bullet = _bulletManager.GetBullet();//Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
+        GameObject bullet = _bulletManager.GetBullet(BulletType.ENEMY);//Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
         bullet.transform.position = _shootingPoint.position;
-        bullet.transform.eulerAngles = new Vector3(0, 0, 180);
-        bullet.GetComponent<SpriteRenderer>().color = Color.green;
         bullet.GetComponent<BulletBehaviour>().RelativeSpeedAddition(Mathf.Abs(_verticalSpeed));
         yield return new WaitForSeconds(_shootingCooldownTime);
 
@@ -96,4 +94,14 @@ public class EnemyBehaviour : MonoBehaviour
         _verticalSpeed = Random.Range(_verticalSpeedRange.min, _verticalSpeedRange.max);
         _horizontalSpeed = Random.Range(_horizonalSpeedRange.min, _horizonalSpeedRange.max);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("PlayerBullet"))
+        {
+            _gameController.ChangeScore(15);
+            StartCoroutine(DyingRoutine());
+        }
+    }
+
 }
