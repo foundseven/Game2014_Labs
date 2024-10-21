@@ -8,11 +8,27 @@ public class EnemyBehaviour : MonoBehaviour
     private float _verticalSpeed;
     private float _horizontalSpeed;
 
-    [SerializeField] Boundry _verticalSpeedRange;
-    [SerializeField] Boundry _horizonalSpeedRange;
+    [SerializeField] 
+    Boundry _verticalSpeedRange;
 
-    [SerializeField] Boundry _verticalBoundry;
-    [SerializeField] Boundry _horizontalBoundry;
+    [SerializeField] 
+    Boundry _horizonalSpeedRange;
+
+    [SerializeField] 
+    Boundry _verticalBoundry;
+
+    [SerializeField] 
+    Boundry _horizontalBoundry;
+
+    [SerializeField]
+    Transform _shootingPoint;
+
+    [SerializeField]
+    [Range(0.01f, 1.00f)]
+    float _shootingCooldownTime;
+
+    GameObject _bulletPrefab;
+
 
     SpriteRenderer _spriteRenderer;
 
@@ -21,8 +37,10 @@ public class EnemyBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _bulletPrefab = Resources.Load<GameObject>("Prefabs/Bullet");
         _spriteRenderer = GetComponent<SpriteRenderer>();
         Reset();
+        StartCoroutine(ShootingRoutine());
     }
 
     // Update is called once per frame
@@ -38,12 +56,16 @@ public class EnemyBehaviour : MonoBehaviour
         {
             Reset();
         }
-        //checks if the player is off the screen from the sides and will change the speed the other direction
-        //if (transform.position.x > _horizontalBoundry.max || 
-        //    transform.position.x < _horizontalBoundry.min)
-        //{
-        //    _horizontalSpeed = - _horizontalSpeed;
-        //}
+    }
+    IEnumerator ShootingRoutine()
+    {
+        GameObject bullet = Instantiate(_bulletPrefab, _shootingPoint.position, Quaternion.identity);
+        bullet.transform.eulerAngles = new Vector3(0, 0, 180);
+        bullet.GetComponent<SpriteRenderer>().color = Color.green;
+        bullet.GetComponent<BulletBehaviour>().RelativeSpeedAddition(Mathf.Abs(_verticalSpeed));
+        yield return new WaitForSeconds(_shootingCooldownTime);
+
+        StartCoroutine(ShootingRoutine());
     }
 
     public IEnumerator DyingRoutine()
