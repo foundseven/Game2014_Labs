@@ -14,7 +14,7 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField] 
     private Boundry _verticalBoundry;
 
-    bool _isTestMobile;
+    public bool _isTestMobile;
 
     Camera _camera;
     Vector2 _destination;
