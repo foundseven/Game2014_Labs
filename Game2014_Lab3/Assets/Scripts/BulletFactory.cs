@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletFactory : MonoBehaviour
 {
     //this is what instantiates the prefab essentially
-
+    //this only holds the creation of the bullet
     [SerializeField]
     public static GameObject _bulletPrefab;
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour
 {
+    //what the bullet does
+
     [SerializeField]
     float _speed = 1;
 
