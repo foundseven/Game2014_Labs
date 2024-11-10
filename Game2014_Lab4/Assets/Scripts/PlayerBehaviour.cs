@@ -29,11 +29,14 @@ public class PlayerBehaviour : MonoBehaviour
 
     Rigidbody2D _rigidBody;
 
+    Joystick _leftJoystick;
+
     bool _isGrounded;
 
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+        _leftJoystick = GameObject.Find("LeftJoystick").GetComponent<Joystick>();
     }
 
     // Update is called once per frame
@@ -50,6 +53,11 @@ public class PlayerBehaviour : MonoBehaviour
     {
         float xInput = Input.GetAxisRaw("Horizontal");
 
+        if(_leftJoystick)
+        {
+            xInput = _leftJoystick.Horizontal;
+            Debug.Log(_leftJoystick.Horizontal + "-" + _leftJoystick.Vertical);
+        }
         if (xInput != 0.0f)
         {
             Vector2 force = Vector2.right * xInput * _horizontalForce;
@@ -59,6 +67,8 @@ public class PlayerBehaviour : MonoBehaviour
             }
 
             _rigidBody.AddForce(force);
+
+            GetComponent<SpriteRenderer>().flipX = (force.x < 0.0f);
 
             if(Mathf.Abs(_rigidBody.velocity.x) > _horizontalSpeedLimit) 
             {
