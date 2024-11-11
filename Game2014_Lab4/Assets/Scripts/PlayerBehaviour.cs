@@ -27,6 +27,10 @@ public class PlayerBehaviour : MonoBehaviour
     [SerializeField]
     LayerMask _groundLayerMask;
 
+    [SerializeField]
+    [Range(0f, 1f)]
+    float _leftJoystickVerticalThreshold;
+
     Rigidbody2D _rigidBody;
 
     Joystick _leftJoystick;
@@ -36,7 +40,11 @@ public class PlayerBehaviour : MonoBehaviour
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _leftJoystick = GameObject.Find("LeftJoystick").GetComponent<Joystick>();
+
+        if (GameObject.Find("OnScreenControllers"))
+        {
+            _leftJoystick = GameObject.Find("LeftJoystick").GetComponent<Joystick>();
+        }
     }
 
     // Update is called once per frame
@@ -82,8 +90,11 @@ public class PlayerBehaviour : MonoBehaviour
     public void Jump()
     {
         var jumpPressed = Input.GetAxisRaw("Jump");
-
-        if (_isGrounded && jumpPressed != 0.0f)
+        if(_leftJoystick)
+        {
+            jumpPressed = _leftJoystick.Vertical;
+        }
+        if (_isGrounded && jumpPressed > _leftJoystickVerticalThreshold)
         {
             _rigidBody.AddForce(Vector2.up * _verticalForce);
         }
