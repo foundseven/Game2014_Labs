@@ -31,6 +31,11 @@ public class PlayerBehaviour : MonoBehaviour
     [Range(0f, 1f)]
     float _leftJoystickVerticalThreshold;
 
+    [SerializeField]
+    float _deathFallSpeed = 5;
+
+    Animator _animator;
+
     Rigidbody2D _rigidBody;
 
     Joystick _leftJoystick;
@@ -40,6 +45,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
 
         if (GameObject.Find("OnScreenControllers"))
         {
@@ -53,8 +59,8 @@ public class PlayerBehaviour : MonoBehaviour
         _isGrounded = Physics2D.OverlapCircle(_groundingPoint.position, _groundingRadius, _groundLayerMask);
 
         Move();
-
         Jump();
+        AnimtorStateControl();
     }
 
     public void Move()
@@ -71,7 +77,7 @@ public class PlayerBehaviour : MonoBehaviour
             Vector2 force = Vector2.right * xInput * _horizontalForce;
             if (!_isGrounded)
             {
-                force *= _airFactor;
+                force = new Vector2(force.x * _airFactor, force.y);
             }
 
             _rigidBody.AddForce(force);
@@ -96,7 +102,33 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (_isGrounded && jumpPressed > _leftJoystickVerticalThreshold)
         {
-            _rigidBody.AddForce(Vector2.up * _verticalForce);
+            _rigidBody.AddForce(Vector2.up * _verticalForce, ForceMode2D.Impulse);
+        }
+    }
+
+    void AnimtorStateControl()
+    {
+        if (_isGrounded) 
+        { 
+            if (Mathf.Abs(_rigidBody.velocity.x) > 0.1)
+            {
+                _animator.SetInteger("State", (int)AnimationStates.WALK);
+            }
+            else
+            {
+                _animator.SetInteger("State", (int)AnimationStates.IDLE);
+            }
+        }
+        else
+        {
+            if(Mathf.Abs(_rigidBody.velocity.y) < _deathFallSpeed) 
+            {
+                _animator.SetInteger("State", (int)AnimationStates.FALL);
+            }
+            else
+            {
+                _animator.SetInteger("State", (int)AnimationStates.JUMP);
+            }
         }
     }
 
