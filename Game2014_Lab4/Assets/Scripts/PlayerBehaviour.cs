@@ -121,7 +121,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         else
         {
-            if(Mathf.Abs(_rigidBody.velocity.y) < _deathFallSpeed) 
+            if(Mathf.Abs(_rigidBody.velocity.y) > _deathFallSpeed) 
             {
                 _animator.SetInteger("State", (int)AnimationStates.FALL);
             }
