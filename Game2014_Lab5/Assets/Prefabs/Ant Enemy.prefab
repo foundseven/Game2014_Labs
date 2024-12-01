@@ -224,7 +224,7 @@ MonoBehaviour:
   _groundCheckDistance: 0.5
   _layerMask:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 448
 --- !u!70 &3926171518501809821
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
