@@ -39,13 +39,14 @@ public class PlayerBehaviour : MonoBehaviour
     Rigidbody2D _rigidBody;
 
     Joystick _leftJoystick;
-
+    HealthBarController _healthBar;
     bool _isGrounded;
 
     void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _healthBar = GetComponentInChildren<HealthBarController>();
 
         if (GameObject.Find("OnScreenControllers"))
         {
@@ -103,6 +104,15 @@ public class PlayerBehaviour : MonoBehaviour
         if (_isGrounded && jumpPressed > _leftJoystickVerticalThreshold)
         {
             _rigidBody.AddForce(Vector2.up * _verticalForce, ForceMode2D.Impulse);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Enemy"))
+        {
+           _healthBar.TakeDamage(collision.GetComponent<IDamage>().Damage());
+
         }
     }
 

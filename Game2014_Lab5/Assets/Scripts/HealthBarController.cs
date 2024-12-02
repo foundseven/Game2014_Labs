@@ -12,13 +12,14 @@ public class HealthBarController : MonoBehaviour
     [SerializeField]
     bool _gameOverCondition;
 
-    int _value;
-
+    [SerializeField]
     Slider _slider;
+
+    int _value;
     // Start is called before the first frame update
     void Start()
     {
-        _slider = GetComponent<Slider>();
+        _slider = GetComponentInChildren<Slider>();
         _slider.maxValue = _maxHealth;
         _slider.value = _maxHealth;
     }

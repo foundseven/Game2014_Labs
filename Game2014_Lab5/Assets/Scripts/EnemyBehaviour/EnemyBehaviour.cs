@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBehaviour : MonoBehaviour
+public class EnemyBehaviour : MonoBehaviour, IDamage
 {
     [SerializeField]
     float _speed = .1f;
@@ -22,6 +22,9 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField]
     LayerMask _layerMask;
 
+    [SerializeField]
+    int _damage;
+
     PlayerDetection _playerDetector;
 
     Animator _animator;
@@ -32,7 +35,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private void Start()
     {
-        _playerDetector = GetComponent<PlayerDetection>();
+        _playerDetector = GetComponentInChildren<PlayerDetection>();
         _animator = GetComponent<Animator>();
     }
 
@@ -66,6 +69,10 @@ public class EnemyBehaviour : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
     }
 
+    public int Damage()
+    {
+        return _damage;
+    }
     private void OnDrawGizmos()
     {
         Debug.DrawLine(_baseCenterPoint.position, _baseCenterPoint.position + Vector3.down * _groundCheckDistance);

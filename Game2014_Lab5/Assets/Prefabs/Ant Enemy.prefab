@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7513222517872945130}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FrontObstaclePoint
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 351069690302751727}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BaseCenterPoint
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8415176116711709434}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FrontGroundPoint
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -87,7 +87,7 @@ Transform:
   m_GameObject: {fileID: 2954536429342494759}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.92, y: -1, z: 0}
+  m_LocalPosition: {x: -0.69, y: -1.07, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104,14 +104,14 @@ GameObject:
   - component: {fileID: 1399317395766507356}
   - component: {fileID: 839907264314497558}
   - component: {fileID: 4386653610749232096}
-  - component: {fileID: 5550099563068004977}
+  - component: {fileID: 2910960269930018902}
   - component: {fileID: 1868707057752178410}
   - component: {fileID: 3926171518501809821}
   - component: {fileID: 5897443802520533786}
-  - component: {fileID: 7457967691471026264}
-  m_Layer: 0
+  - component: {fileID: 5132669841492661224}
+  m_Layer: 9
   m_Name: Ant Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,6 +132,7 @@ Transform:
   - {fileID: 351069690302751727}
   - {fileID: 8415176116711709434}
   - {fileID: 7513222517872945130}
+  - {fileID: 1504430693960635031}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &839907264314497558
@@ -207,7 +208,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5550099563068004977
+--- !u!114 &2910960269930018902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -216,11 +217,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4362647498868229515}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cafc9fc62a0b9fa42a7ef02c45579738, type: 3}
+  m_Script: {fileID: 11500000, guid: af67525fb5a21984ba19f3e34289281a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isSensing: 0
-  _LOS: 0
+  _fireDelay: 30
+  _bullet: {fileID: 5174125282149186087, guid: a407f226faaea9240a469a721425be8b, type: 3}
 --- !u!114 &1868707057752178410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,14 +234,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 648ae749a6b594649b39615f135d78c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 0.1
+  _speed: 0.16
   _baseCenterPoint: {fileID: 351069690302751727}
   _frontGroundPoint: {fileID: 8415176116711709434}
   _frontObstaclePoint: {fileID: 7513222517872945130}
-  _groundCheckDistance: 0.5
+  _groundCheckDistance: 0.71
   _layerMask:
     serializedVersion: 2
     m_Bits: 448
+  _damage: 20
 --- !u!70 &3926171518501809821
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -303,7 +305,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &7457967691471026264
+--- !u!58 &5132669841492661224
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,6 +321,91 @@ CircleCollider2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.15625
+--- !u!1 &7862323970549161505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1504430693960635031}
+  - component: {fileID: 2083754459009475209}
+  - component: {fileID: 1706423535316718455}
+  m_Layer: 9
+  m_Name: PlayerDetection
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1504430693960635031
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862323970549161505}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1399317395766507356}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2083754459009475209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862323970549161505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cafc9fc62a0b9fa42a7ef02c45579738, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isSensing: 0
+  _LOS: 0
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 456
+--- !u!58 &1706423535316718455
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7862323970549161505}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
