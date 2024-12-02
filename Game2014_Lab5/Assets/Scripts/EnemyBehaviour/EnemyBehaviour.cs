@@ -22,13 +22,18 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField]
     LayerMask _layerMask;
 
+    PlayerDetection _playerDetector;
+
+    Animator _animator;
+
     bool _isGrounded;
     bool _isOnTheEdge;
     bool _isThereFrontObstacle;
 
     private void Start()
     {
-        
+        _playerDetector = GetComponent<PlayerDetection>();
+        _animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -41,7 +46,10 @@ public class EnemyBehaviour : MonoBehaviour
         {
             ChangeDirection();
         }
-        if(_isGrounded)
+
+        _animator.SetInteger("State", (int)AnimationStates.IDLE);
+
+        if (_isGrounded && !_playerDetector.GetLOSStatus())
         {
             Move();
         }
@@ -49,6 +57,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Move()
     {
+        _animator.SetInteger("State", (int)AnimationStates.WALK);
         transform.position += Vector3.left * transform.localScale.x * _speed;
     }
 

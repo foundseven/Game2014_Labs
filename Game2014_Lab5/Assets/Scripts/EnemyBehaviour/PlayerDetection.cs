@@ -51,4 +51,9 @@ public class PlayerDetection : MonoBehaviour
             Debug.DrawLine(transform.position, _player.transform.position, color);
         }
     }
+
+    public bool GetLOSStatus()
+    {
+        return _LOS;
+    }
 }
